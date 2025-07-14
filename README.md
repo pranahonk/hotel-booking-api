@@ -94,6 +94,112 @@ This is the backend API for the Hotel Booking website. It provides endpoints for
    node src/utils/seedData.js
    ```
 
+## API Endpoints
+
+### Rooms
+
+#### Get All Rooms
+```
+GET /api/rooms
+```
+
+**Query Parameters:**
+- `price[gte]`: Filter rooms with price greater than or equal to specified value
+- `price[lte]`: Filter rooms with price less than or equal to specified value
+- `capacity`: Filter rooms by capacity
+- `type`: Filter rooms by type (e.g., 'single', 'double', 'suite')
+- `sort`: Sort results (e.g., `sort=price,-capacity` sorts by price ascending and capacity descending)
+- `fields`: Select specific fields (e.g., `fields=name,price,capacity`)
+- `page`: Page number for pagination
+- `limit`: Number of results per page
+
+**Example Request:**
+```
+GET https://hotel-booking-api.onrender.com/api/rooms?type=deluxe&price[gte]=150&price[lte]=300&sort=-price&limit=2
+```
+
+**Example Response:**
+```json
+{
+  "status": "success",
+  "results": 2,
+  "data": {
+    "rooms": [
+      {
+        "_id": "60d21b4667d0d8992e610c85",
+        "name": "Deluxe Ocean View",
+        "description": "Luxurious room with panoramic ocean views and premium amenities",
+        "type": "deluxe",
+        "price": 289,
+        "capacity": 2,
+        "amenities": ["Air Conditioning", "Free WiFi", "TV", "Mini Bar", "Ocean View", "Balcony"],
+        "images": [
+          "https://example.com/rooms/deluxe-ocean-1.jpg",
+          "https://example.com/rooms/deluxe-ocean-2.jpg"
+        ],
+        "bookings": [],
+        "createdAt": "2025-06-19T10:15:23.456Z",
+        "updatedAt": "2025-07-12T08:30:45.123Z"
+      },
+      {
+        "_id": "60d21b4667d0d8992e610c86",
+        "name": "Deluxe Mountain View",
+        "description": "Spacious room with stunning mountain views and modern amenities",
+        "type": "deluxe",
+        "price": 249,
+        "capacity": 2,
+        "amenities": ["Air Conditioning", "Free WiFi", "TV", "Mini Bar", "Mountain View", "Balcony"],
+        "images": [
+          "https://example.com/rooms/deluxe-mountain-1.jpg",
+          "https://example.com/rooms/deluxe-mountain-2.jpg"
+        ],
+        "bookings": [],
+        "createdAt": "2025-06-19T11:20:33.789Z",
+        "updatedAt": "2025-07-11T14:25:12.345Z"
+      }
+    ]
+  }
+}
+```
+
+**More Example Requests:**
+```
+# Get all rooms with price between $100 and $300
+GET /api/rooms?price[gte]=100&price[lte]=300
+
+# Get all double rooms sorted by price (lowest first)
+GET /api/rooms?type=double&sort=price
+
+# Get page 2 with 5 rooms per page, only showing name and price
+GET /api/rooms?page=2&limit=5&fields=name,price
+```
+
+#### Get Room by ID
+```
+GET /api/rooms/:id
+```
+
+**Example:**
+```
+GET /api/rooms/60d21b4667d0d8992e610c85
+```
+
+#### Check Room Availability
+```
+GET /api/rooms/availability
+```
+
+**Query Parameters:**
+- `roomId`: ID of the room to check (required)
+- `checkIn`: Check-in date in ISO format (required)
+- `checkOut`: Check-out date in ISO format (required)
+
+**Example:**
+```
+GET /api/rooms/availability?roomId=60d21b4667d0d8992e610c85&checkIn=2025-08-01T14:00:00Z&checkOut=2025-08-05T11:00:00Z
+```
+   ```
+
 4. Start the server:
    ```
    npm run dev
