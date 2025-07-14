@@ -7,7 +7,13 @@ export const createBooking = async (req, res) => {
     // Add user ID from authenticated user
     req.body.user = req.user.id;
     
-    const { room: roomId, checkIn, checkOut } = req.body;
+    // Accept both 'room' and 'roomId' parameters for better API flexibility
+    let roomId = req.body.room;
+    if (!roomId && req.body.roomId) {
+      roomId = req.body.roomId;
+    }
+    
+    const { checkIn, checkOut } = req.body;
     
     // Check if room exists
     const room = await Room.findById(roomId);
